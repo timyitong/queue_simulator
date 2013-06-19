@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from simulator.utils import randseq
+from simulator.utils import companyvector
+from simulator.utils import actions_seq
+from StringIO import StringIO
 import json
 
 
@@ -9,8 +13,13 @@ def index(request,template_name='simulator/index.html'):
 	return render(request, template_name, data)
 def simulate(request):
 	data = {}
-	student_num = request.GET['student_num']
-	company_num = request.GET['company_num']
-	company_array = request.GET['company_array']
-	student_array = request.GET['student_array']
+	json_obj = json.loads(request.POST['json_data'])
+	student_num = json_obj['student_num']
+	company_num = json_obj['company_num']
+	companies = json_obj['companies']
+	students = json_obj['students']
+	vec = companyvector(companies)
+	# Get all student squences
+	rdns = randseq(student_num,vec)
+	data['json_data'] = json.dumps(actions_seq(rdns,companies))
 	return HttpResponse(json.dumps(data), mimetype='application/json')
