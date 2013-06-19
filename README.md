@@ -5,7 +5,6 @@ Simulate a job fair queueing situation
 
 The API interface is as follows:
 <pre><code>
-<script>
 	var url="http://127.0.0.1:8080/simulate/";
 	$.ajax({
 	    url: url,
@@ -27,7 +26,6 @@ The API interface is as follows:
 	    	console.log(text)
 	    }
 	});
-</script>
 </code></pre>
 
 Returns:
