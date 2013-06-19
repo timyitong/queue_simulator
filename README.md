@@ -3,7 +3,7 @@ Virtual Queue Simulator
 
 Simulate a job fair queueing situation
 
-The API interface is as follows:
+An example for the API interface is as follows:
 <pre><code>
 	var url="http://127.0.0.1:8080/simulate/";
 	$.ajax({
