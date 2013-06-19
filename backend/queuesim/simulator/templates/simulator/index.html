@@ -1,6 +1,29 @@
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script>
+	var url="http://127.0.0.1:8080/simulate/";
+	$.ajax({
+	    url: url,
+	    type: 'POST',
+	    data:{	json_data: JSON.stringify({
+	    			student_num: 10,
+	    			company_num: 3,
+	    			companies:[
+	    				{weight:10,speed:2},
+	    				{weight:11,speed:1},
+	    				{weight:9,speed:2}
+	    			],
+	    			students:"",
+	    		}),
+	    		csrfmiddlewaretoken:'{{csrf_token}}'
+	    	},
+	    success: function(data, textStatus, xhr) {
+	    	var text=xhr.responseText
+	    	console.log(text)
+	    }
+	});
+	</script>
 </head>
 
 <body>
