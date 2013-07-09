@@ -126,8 +126,6 @@
 
 
 
-
-
       //top layer
 
       for( i=0; i < student_num ; i++){
@@ -152,15 +150,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
       //data processing
       var json = data.json_data;
 
@@ -169,7 +158,7 @@
         // {"cid": 1, "type": "enqueue", "time": 1, "sid": 2}, 
         // {"cid": 1, "type": "enqueue", "time": 1, "sid": 3}, 
 
-        var count = 0,
+      var count = 0,
         mytime = 1,
         student_movement = Array(),
         j=0;
@@ -180,13 +169,17 @@
             increX = Array(),
             increY = Array();
 
+
+      //the initial random XY
       for(i=0; i<student_num; i++){
         lastX[i] = students[i].getX();
       }
            for(i=0; i<student_num; i++){
         lastY[i] = students[i].getY();
       }
-           for(i=0; i<student_num; i++){
+
+      // initialize incre
+      for(i=0; i<student_num; i++){
         increX[i] = 0;
       }     
       for(i=0; i<student_num; i++){
@@ -195,51 +188,72 @@
       //animation
 
       for(i=0; i<student_num; i++){
-        student_movement[i] = { 'x': 0 , 'y': 0 };
+        //movement destination for this student
+        student_movement[i] = { 'x': 0 , 'y': 0 }; 
+
       }
 
+      var interval_constant = 200 ;
       
-      var anim = new Kinetic.Animation(function(frame) {
+      var anim = new Kinetic.Animation( function(frame) {
 
         count++;
         // 50 count equals about 1 second
+        //count always in 0 to 200(interval)
 
-        //console.log(count);
-        if( count ==  mytime * 200 ){
+        //j was initialized as 0 and increase to infinity
+
+        if( count ===  interval_constant ){
           //update movement info
+
           while( json[j].time <= mytime ){
-            //for one student here
+            //for one time period and one student here
+            console.log( json[j].time + "  "+ mytime+ "   "+ j );
+
             var id = json[j].sid,
                 cid = json[j].cid,
                 type = json[j].type,
-                destination = resting_area_position;
+                destination = resting_area_position; // by default the student goes to resting area
 
                 if( type == "enqueue" ){
                   console.log("one student enqueue");
                   destination = companies_position[cid];
                 }
 
-                // go to that point
+
+            // assign old destination
+            lastX[id] = student_movement[id].x;
+            lastY[id] = student_movement[id].y;
+
+
+            // log  new destination into movement Array
             student_movement[ id ] = destination;
 
-            j++; 
+
+            //calculate the increX and increY
+            increX[id] = ( student_movement[id].x - lastX[id].x ) / interval_constant;
+            increY[id] = ( student_movement[id].y - lastY[id].y ) / interval_constant;
+
+            j++;
+
           }
 
+          console.log( "mytime = "+ mytime );
           mytime++;
 
 
-          //students[ json[j].sid ]
+
+          //update count to zero
+          count = 0 ;
         }
 
 
 
         //do the movements 
-for( i=0 ; i< student_movement; i++){
-  students[i].setX( lastX[i] + increX[i]*count );
-    students[i].setY( lastY[i] + increY[i]*count );
-}
-
-
+        for( i=0 ; i< students.length; i++){
+          students[i].setX( lastX[i] + increX[i]*count );
+          students[i].setY( lastY[i] + increY[i]*count );
+        }
 
 
     // update stuff
