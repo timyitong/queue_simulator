@@ -189,7 +189,7 @@
 
       for(i=0; i<student_num; i++){
         //movement destination for this student
-        student_movement[i] = { 'x': 0 , 'y': 0 }; 
+        student_movement[i] = { 'x': students[i].getX() , 'y': students[i].getY() }; 
 
       }
 
@@ -205,10 +205,20 @@
 
         if( count ===  interval_constant ){
           //update movement info
+          console.log("inside decision");
+
+            //record last movement
+            for( i=0 ; i<student_movement.length ; i++ ){
+              lastX[i] = student_movement[i].x;
+              lastY[i] = student_movement[i].y;
+            }
+
+            console.log( "lastX[0]  "+lastX[0]+"    lastY[0]  "+lastY[0] );
+
 
           while( json[j].time <= mytime ){
             //for one time period and one student here
-            console.log( json[j].time + "  "+ mytime+ "   "+ j );
+            console.log( "jsonTime "+json[j].time + "  mytime: "+ mytime+ "   j="+ j );
 
             var id = json[j].sid,
                 cid = json[j].cid,
@@ -221,21 +231,19 @@
                 }
 
 
-            // assign old destination
-            lastX[id] = student_movement[id].x;
-            lastY[id] = student_movement[id].y;
-
-
-            // log  new destination into movement Array
+            // update  new destination into movement Array
             student_movement[ id ] = destination;
-
-
-            //calculate the increX and increY
-            increX[id] = ( student_movement[id].x - lastX[id].x ) / interval_constant;
-            increY[id] = ( student_movement[id].y - lastY[id].y ) / interval_constant;
 
             j++;
 
+          }
+
+          //console.log("before determine incre:  sm[0]: "+ student_movement[0]+ "  lastX[0]: "+lastX[0]);
+
+          for( i=0 ; i<student_movement.length ; i++ ){
+            //calculate the increX and increY
+            increX[i] = ( student_movement[i].x - lastX[i] ) / interval_constant;
+            increY[i] = ( student_movement[i].y - lastY[i] ) / interval_constant;
           }
 
           console.log( "mytime = "+ mytime );
@@ -249,6 +257,7 @@
 
 
 
+            console.log( "before movement ---- increX[0]  "+increX[0]+"    increY[0]  "+increY[0] );
         //do the movements 
         for( i=0 ; i< students.length; i++){
           students[i].setX( lastX[i] + increX[i]*count );
