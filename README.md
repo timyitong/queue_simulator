@@ -2,7 +2,11 @@ Virtual Queue Simulator
 ===============
 
 Simulate a job fair queueing situation
+I. Frontend
+The entrance url is 127.0.0.1/simulator
+The fronend script is located at [root]/queuesim/simulator/templates/simulator/index.html
 
+II. Backend
 An example for the API interface is as follows:
 <pre><code>
 	var url="http://127.0.0.1:8080/simulate/";
