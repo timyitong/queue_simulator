@@ -1,7 +1,14 @@
 Virtual Queue Simulator
 ===============
 
-Simulate a job fair queueing situation
+Simulate a job fair queueing situation.
+
+<strong>Start Server:</strong> 
+<pre>
+cd queuesim
+
+./run.sh
+</pre>
 
 <strong>I. Frontend</strong>
 
