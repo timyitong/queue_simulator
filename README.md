@@ -6,7 +6,6 @@ Simulate a job fair queueing situation.
 <strong>Start Server:</strong> 
 <pre>
 cd queuesim
-
 ./run.sh
 </pre>
 
